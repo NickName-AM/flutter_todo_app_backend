@@ -8,5 +8,5 @@ class TodoListCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Todo
-        # fields = ['title', 'date', 'start_time', 'end_time']
-        exclude = ['id']
+        fields = '__all__'
+        # exclude = ['id']
