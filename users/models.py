@@ -22,9 +22,11 @@ class CustomUserManager(BaseUserManager):
 
 class User(AbstractUser, PermissionsMixin):
     username = None
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
+    full_name = models.CharField(max_length=100)
     
     USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
 

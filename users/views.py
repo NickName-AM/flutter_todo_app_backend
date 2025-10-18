@@ -10,3 +10,7 @@ from users.serializers import UserCreateSerializer
 class UserCreateAPIView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserCreateSerializer
+
+    def create(self, request, *args, **kwargs):
+        print(self.request.body)
+        return super().create(request, *args, **kwargs)
