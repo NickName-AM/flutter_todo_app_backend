@@ -12,6 +12,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
 
         token['name'] = user.full_name
+        token['email'] = user.email
+
+        print(token)
 
         return token
 

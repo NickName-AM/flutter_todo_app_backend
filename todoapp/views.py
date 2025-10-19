@@ -1,9 +1,13 @@
+from django.shortcuts import get_object_or_404
+
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import DestroyAPIView
-
+from rest_framework.permissions import IsAuthenticated
 
 from todoapp.models import Todo
 from todoapp.serializers import TodoListCreateSerializer
+
+from users.permissions import IsOwner
 
 # Create your views here.
 
@@ -11,10 +15,19 @@ from todoapp.serializers import TodoListCreateSerializer
 class TodoListCreateAPIView(ListCreateAPIView):
     queryset = Todo.objects.all()
     serializer_class = TodoListCreateSerializer
+    permission_classes = [IsAuthenticated]
 
-    def post(self, request, *args, **kwargs):
-        print(self.request.body)
-        return super().post(request, *args, **kwargs)
+    def get_queryset(self):
+        return Todo.objects.filter(user=self.request.user)
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
 
 class TodoDestroyAPIView(DestroyAPIView):
     queryset = Todo.objects.all()
+    permission_classes = [IsAuthenticated, IsOwner]
+
+    def get_queryset(self):
+        return Todo.objects.filter(user=self.request.user)
