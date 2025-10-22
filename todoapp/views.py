@@ -1,5 +1,3 @@
-from django.shortcuts import get_object_or_404
-
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import DestroyAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -18,7 +16,7 @@ class TodoListCreateAPIView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Todo.objects.filter(user=self.request.user)
+        return Todo.objects.filter(user=self.request.user).order_by('date')
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
